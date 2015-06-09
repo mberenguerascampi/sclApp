@@ -22,6 +22,7 @@ import android.widget.TextView;
 import com.plusbits.social.R;
 import com.plusbits.social.fragments.DefaultFragment;
 import com.plusbits.social.fragments.DefaultFragment_;
+import com.plusbits.social.fragments.EventsFragment;
 
 public class MainActivity extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks, DefaultFragment.OnFragmentInteractionListener {
@@ -58,7 +59,7 @@ public class MainActivity extends ActionBarActivity
         Fragment fragment = null;
         switch (position){
             case 0:
-                fragment = PlaceholderFragment.newInstance(position + 1);
+                fragment = EventsFragment.newInstance(position + 1);
                 break;
 
             default:

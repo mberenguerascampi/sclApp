@@ -28,7 +28,7 @@ public class DefaultFragment extends android.support.v4.app.Fragment {
 
     private int sectionNumber;
 
-    private OnFragmentInteractionListener mListener;
+    public OnFragmentInteractionListener mListener;
 
     /**
      * Use this factory method to create a new instance of

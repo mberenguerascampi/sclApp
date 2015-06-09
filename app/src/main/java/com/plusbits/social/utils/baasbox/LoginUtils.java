@@ -1,4 +1,4 @@
-package com.plusbits.social.baasbox.utils;
+package com.plusbits.social.utils.baasbox;
 
 import android.util.Log;
 

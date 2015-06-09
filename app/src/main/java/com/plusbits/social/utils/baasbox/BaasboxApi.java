@@ -1,7 +1,8 @@
-package com.plusbits.social.baasbox.utils;
+package com.plusbits.social.utils.baasbox;
 
 import android.util.Log;
 
+import com.baasbox.android.BaasDocument;
 import com.baasbox.android.BaasHandler;
 import com.baasbox.android.BaasQuery;
 import com.baasbox.android.BaasResult;
@@ -35,6 +36,27 @@ public class BaasboxApi {
                 }
             }
         });
+    }
+
+    public void getAllEvents(){
+        // using pagination and selection
+        BaasQuery.Criteria filter = BaasQuery.builder().pagination(0, 20)
+                .orderBy("field name")
+                .criteria();
+
+        BaasDocument.fetchAll(BaasboxConstants.EVENTS_COLLECTION, filter,
+                new BaasHandler<List<BaasDocument>>() {
+                    @Override
+                    public void handle(BaasResult<List<BaasDocument>> res) {
+                        if (res.isSuccess()) {
+                            for (BaasDocument doc : res.value()) {
+                                Log.d("LOG", "Doc: " + doc);
+                            }
+                        } else {
+                            Log.e("LOG", "Error", res.error());
+                        }
+                    }
+                });
     }
 
     /** PRIVATE METHODS **/

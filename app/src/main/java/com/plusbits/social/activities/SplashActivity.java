@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.plusbits.social.R;
+import com.plusbits.social.utils.Constants;
 
 import org.androidannotations.annotations.EActivity;
 
@@ -22,7 +23,13 @@ public class SplashActivity extends ActionBarActivity {
             @Override
             public void run() {
                 // Start main activity
-                Intent i = new Intent(SplashActivity.this, LoginActivity.class);
+                Intent i = null;
+                if(Constants.VERSION == Constants.USER_VERSION){
+                    i = new Intent(SplashActivity.this, MainActivity.class);
+                }
+                else{
+                    i = new Intent(SplashActivity.this, LoginActivity.class);
+                }
                 startActivity(i);
 
                 // close this activity

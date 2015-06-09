@@ -5,7 +5,6 @@ import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.LoaderManager.LoaderCallbacks;
-import android.content.ContentResolver;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
@@ -32,7 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.plusbits.social.R;
-import com.plusbits.social.baasbox.utils.LoginUtils;
+import com.plusbits.social.utils.baasbox.LoginUtils;
 import com.plusbits.social.interfaces.LoginListener;
 
 /**
