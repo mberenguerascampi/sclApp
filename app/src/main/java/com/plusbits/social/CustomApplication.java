@@ -3,6 +3,7 @@ package com.plusbits.social;
 import android.app.Application;
 
 import com.baasbox.android.BaasBox;
+import com.plusbits.social.utils.baasbox.BaasboxConstants;
 
 /**
  * Created by Marc on 02/06/2015.
@@ -14,9 +15,9 @@ public class CustomApplication extends Application {
             super.onCreate();
 
             BaasBox.builder(this).setAuthentication(BaasBox.Config.AuthType.SESSION_TOKEN)
-                    .setApiDomain("baasbox-plusbits.rhcloud.com")
+                    .setApiDomain(BaasboxConstants.BAASBOX_URL)
                     .setPort(80)
-                    .setAppCode("1234567890")
+                    .setAppCode(BaasboxConstants.BAASBOX_APP_CODE)
                     .init();
 //        BaasBox.Config config = new BaasBox.Config();
 //        config.authenticationType= BaasBox.Config.AuthType.SESSION_TOKEN;

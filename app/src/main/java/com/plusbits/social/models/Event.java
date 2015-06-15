@@ -12,14 +12,14 @@ public class Event {
     private String description;
     private String location;
     private Pair<Double,Double> coordinates;
-    private Image image;
+    private String imageURL;
 
-    public Event(String name, String date, String description, String location, Image image) {
+    public Event(String name, String date, String description, String location, String imageURL) {
         this.name = name;
         this.date = date;
         this.description = description;
         this.location = location;
-        this.image = image;
+        this.imageURL = imageURL;
     }
 
     public String getName() {
@@ -54,12 +54,12 @@ public class Event {
         this.coordinates = coordinates;
     }
 
-    public Image getImage() {
-        return image;
+    public String getImageURL() {
+        return imageURL;
     }
 
-    public void setImage(Image image) {
-        this.image = image;
+    public void setImage(String imageURL) {
+        this.imageURL = imageURL;
     }
 
     public String getDate() {

@@ -14,9 +14,15 @@ import android.widget.TextView;
 
 import com.plusbits.social.R;
 
+import com.plusbits.social.adapters.EventsAdapter;
 import com.plusbits.social.fragments.dummy.DummyContent;
+import com.plusbits.social.interfaces.ApiListener;
+import com.plusbits.social.models.Event;
+import com.plusbits.social.utils.baasbox.BaasboxApi;
 
 import org.androidannotations.annotations.EFragment;
+
+import java.util.ArrayList;
 
 /**
  * A fragment representing a list of Items.
@@ -28,7 +34,7 @@ import org.androidannotations.annotations.EFragment;
  * interface.
  */
 @EFragment
-public class EventsFragment extends DefaultFragment implements AbsListView.OnItemClickListener {
+public class EventsFragment extends DefaultFragment implements AbsListView.OnItemClickListener, ApiListener {
 
     /**
      * The fragment's ListView/GridView.
@@ -39,7 +45,7 @@ public class EventsFragment extends DefaultFragment implements AbsListView.OnIte
      * The Adapter which will be used to populate the ListView/GridView with
      * Views.
      */
-    private ListAdapter mAdapter;
+    private EventsAdapter mAdapter;
 
     public static EventsFragment newInstance(int sectionNumber) {
         EventsFragment fragment = new EventsFragment_();
@@ -61,8 +67,11 @@ public class EventsFragment extends DefaultFragment implements AbsListView.OnIte
         super.onCreate(savedInstanceState);
 
         // TODO: Change Adapter to display your content
-        mAdapter = new ArrayAdapter<DummyContent.DummyItem>(getActivity(),
-                android.R.layout.simple_list_item_1, android.R.id.text1, DummyContent.ITEMS);
+        // Construct the data source
+        ArrayList<Event> arrayOfEvents = new ArrayList<Event>();
+        // Create the adapter to convert the array to views
+        mAdapter = new EventsAdapter(getActivity(), arrayOfEvents);
+        BaasboxApi.getAllEvents(this);
     }
 
     @Override
@@ -118,4 +127,16 @@ public class EventsFragment extends DefaultFragment implements AbsListView.OnIte
         public void onFragmentInteraction(String id);
     }
 
+    /** API LISTENER **/
+    @Override
+    public void onGetEventsSuccess(ArrayList<Event> events) {
+        mAdapter.clear();
+        mAdapter.addAll(events);
+        mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onRequestFail(String error) {
+
+    }
 }
