@@ -3,10 +3,12 @@ package com.plusbits.social.models;
 import android.media.Image;
 import android.util.Pair;
 
+import java.io.Serializable;
+
 /**
  * Created by Marc on 09/06/2015.
  */
-public class Event {
+public class Event implements Serializable {
     private String name;
     private String date;
     private String description;

@@ -11,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.plusbits.social.R;
 
@@ -66,7 +67,6 @@ public class EventsFragment extends DefaultFragment implements AbsListView.OnIte
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // TODO: Change Adapter to display your content
         // Construct the data source
         ArrayList<Event> arrayOfEvents = new ArrayList<Event>();
         // Create the adapter to convert the array to views
@@ -96,19 +96,7 @@ public class EventsFragment extends DefaultFragment implements AbsListView.OnIte
             // fragment is attached to one) that an item has been selected.
            //TODO: Implementar el click aqui o a la activity
            // mListener.onFragmentInteraction(DummyContent.ITEMS.get(position).id);
-        }
-    }
-
-    /**
-     * The default content for this Fragment has a TextView that is shown when
-     * the list is empty. If you would like to change the text, call this method
-     * to supply the text it should use.
-     */
-    public void setEmptyText(CharSequence emptyText) {
-        View emptyView = mListView.getEmptyView();
-
-        if (emptyView instanceof TextView) {
-            ((TextView) emptyView).setText(emptyText);
+            mListener.onFragmentInteraction(mAdapter.getItem(position));
         }
     }
 
@@ -137,6 +125,6 @@ public class EventsFragment extends DefaultFragment implements AbsListView.OnIte
 
     @Override
     public void onRequestFail(String error) {
-
+        Toast.makeText(getActivity(), error, Toast.LENGTH_SHORT).show();
     }
 }

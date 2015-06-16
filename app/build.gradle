@@ -30,8 +30,8 @@ dependencies {
     apt "org.androidannotations:androidannotations:$AAVersion"
     compile "org.androidannotations:androidannotations-api:$AAVersion"
     compile files('libs/gson-2.3.1.jar')
-    compile files('libs/spring-android-rest-template-1.0.0.RELEASE.jar')
-    compile files('libs/spring-android-core-1.0.0.RELEASE.jar')
+    compile files('libs/androidasync-2.1.6.jar')
+    compile files('libs/ion-2.1.6.jar')
     compile files('libs/baasbox-android-0.9.2.jar')
     compile 'com.android.support:appcompat-v7:22.1.1'
 }

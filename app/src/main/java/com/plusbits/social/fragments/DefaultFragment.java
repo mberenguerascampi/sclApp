@@ -99,7 +99,7 @@ public class DefaultFragment extends android.support.v4.app.Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        public void onFragmentInteraction(Uri uri);
+        public void onFragmentInteraction(Object obj);
     }
 
 }

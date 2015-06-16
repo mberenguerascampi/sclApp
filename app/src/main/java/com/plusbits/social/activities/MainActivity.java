@@ -1,6 +1,7 @@
 package com.plusbits.social.activities;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
@@ -23,6 +24,7 @@ import com.plusbits.social.R;
 import com.plusbits.social.fragments.DefaultFragment;
 import com.plusbits.social.fragments.DefaultFragment_;
 import com.plusbits.social.fragments.EventsFragment;
+import com.plusbits.social.models.Event;
 
 public class MainActivity extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks, DefaultFragment.OnFragmentInteractionListener {
@@ -123,8 +125,11 @@ public class MainActivity extends ActionBarActivity
 
     /** Fragmet listener **/
     @Override
-    public void onFragmentInteraction(Uri uri) {
-
+    public void onFragmentInteraction(Object obj) {
+        Event event = (Event)obj;
+        Intent i = new Intent(MainActivity.this, EventDetailActivity_.class);
+        i.putExtra("EVENT", event);
+        startActivity(i);
     }
 
     /**

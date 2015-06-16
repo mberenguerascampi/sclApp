@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.koushikdutta.ion.Ion;
 import com.plusbits.social.R;
 import com.plusbits.social.models.Event;
 import com.plusbits.social.utils.DownloadImageTask;
@@ -51,7 +52,14 @@ public class EventsAdapter  extends ArrayAdapter<Event> {
         viewHolder.name.setText(event.getName());
         viewHolder.desc.setText(event.getDescription());
         Log.d("ImageUrl", event.getImageURL());
-        new DownloadImageTask(viewHolder.image).execute(event.getImageURL());
+        //new DownloadImageTask(viewHolder.image).execute(event.getImageURL());
+        Ion.with(viewHolder.image)
+                //.placeholder(R.drawable.placeholder_image)
+                //.error(R.drawable.error_image)
+                //.animateLoad(spinAnimation)
+                //.animateIn(fadeInAnimation)
+                .load(event.getImageURL());
+
         // Return the completed view to render on screen
         return convertView;
     }
