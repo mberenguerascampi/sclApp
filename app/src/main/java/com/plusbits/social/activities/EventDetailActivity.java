@@ -4,14 +4,19 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.koushikdutta.ion.Ion;
 import com.plusbits.social.R;
 import com.plusbits.social.models.Event;
+import com.plusbits.social.utils.Constants;
+import com.plusbits.social.utils.baasbox.BaasboxApi;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 
@@ -22,6 +27,9 @@ public class EventDetailActivity extends ActionBarActivity {
 
     @ViewById
     TextView tvNameEvent, tvDateLocationEvent, tvDescriptionEvent;
+
+    @ViewById
+    Button btnSetPublicEvent;
 
     private Event event;
 
@@ -56,12 +64,19 @@ public class EventDetailActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    //EVENTS
+    @Click
+    void btnSetPublicEvent(){
+        BaasboxApi.setPublicEvent(event.getId());
+    }
+
 
     //PRIVATE METHODS
 
     @AfterViews
     void fillEventDetails(){
         if(event == null) return;
+        if(Constants.VERSION != Constants.ADMIN_VERSION) btnSetPublicEvent.setVisibility(View.GONE);
         tvNameEvent.setText(event.getName());
         tvDateLocationEvent.setText(event.getDate() + " " + event.getLocation());
         tvDescriptionEvent.setText(event.getDescription());

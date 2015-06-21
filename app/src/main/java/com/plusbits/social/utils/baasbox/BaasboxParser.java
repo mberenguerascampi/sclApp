@@ -12,10 +12,10 @@ public class BaasboxParser {
         String date = doc.getString("date");
         String desc = doc.getString("description");
         String location = doc.getString("location");
-        String imageURL = "http://" + BaasboxConstants.BAASBOX_URL + "/asset/" + doc.getString("imageID") +
+        String imageURL = "http://" + BaasboxConstants.BAASBOX_URL + "/file/" + doc.getString("imageID") +
                             "?X-BAASBOX-APPCODE=" + BaasboxConstants.BAASBOX_APP_CODE;
 
 
-        return new Event(name, date, desc, location, imageURL);
+        return new Event(doc.getId(), name, date, desc, location, imageURL);
     }
 }

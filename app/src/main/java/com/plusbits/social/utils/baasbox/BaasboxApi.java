@@ -62,6 +62,7 @@ public class BaasboxApi {
                             ArrayList<Event> events = new ArrayList<Event>();
                             for (BaasDocument doc : res.value()) {
                                 //setPublicDocument(doc);
+                                //TODO: Mirar els permisos
                                 events.add(BaasboxParser.parseEvent(doc));
                             }
                             listener.onGetEventsSuccess(events);
@@ -71,6 +72,25 @@ public class BaasboxApi {
                         }
                     }
                 });
+    }
+
+    /**
+     * Permet que un esdeveniment sigui llegible per a tothom, encara que no estigui registrat
+     * @param eventID Id de l'event que es vol fer públic
+     */
+    public static void setPublicEvent(String eventID){
+        BaasDocument.fetch(BaasboxConstants.EVENTS_COLLECTION,
+                eventID,
+                new BaasHandler<BaasDocument>() {
+                    @Override
+                    public void handle(BaasResult<BaasDocument> res) {
+                        if(res.isSuccess()) {
+                            BaasDocument doc = res.value();
+                            setPublicDocument(doc);
+                        } else {
+                            Log.e("LOG","error",res.error());
+                        }
+                    }});
     }
 
     /**

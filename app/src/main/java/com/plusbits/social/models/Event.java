@@ -9,6 +9,7 @@ import java.io.Serializable;
  * Created by Marc on 09/06/2015.
  */
 public class Event implements Serializable {
+    private String id;
     private String name;
     private String date;
     private String description;
@@ -16,7 +17,8 @@ public class Event implements Serializable {
     private Pair<Double,Double> coordinates;
     private String imageURL;
 
-    public Event(String name, String date, String description, String location, String imageURL) {
+    public Event(String id, String name, String date, String description, String location, String imageURL) {
+        this.id = id;
         this.name = name;
         this.date = date;
         this.description = description;
@@ -70,5 +72,13 @@ public class Event implements Serializable {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }
