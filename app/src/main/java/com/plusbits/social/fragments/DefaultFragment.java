@@ -61,7 +61,7 @@ public class DefaultFragment extends android.support.v4.app.Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-        return null;
+        return rootView;
     }
 
     // TODO: Rename method, update argument and hook method into UI event

@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 import com.plusbits.social.R;
 import com.plusbits.social.models.Event;
@@ -22,6 +23,7 @@ import java.util.ArrayList;
 public class EventsAdapter  extends ArrayAdapter<Event> {
     // View lookup cache
     private static class ViewHolder {
+        String idEvent;
         TextView name;
         TextView desc;
         ImageView image;
@@ -29,6 +31,8 @@ public class EventsAdapter  extends ArrayAdapter<Event> {
 
     public EventsAdapter(Context context, ArrayList<Event> events) {
         super(context, R.layout.item_event, events);
+        Ion ion = Ion.getInstance(getContext(),"ion");
+        ion.getCache().clear();
     }
 
     @Override
@@ -51,13 +55,20 @@ public class EventsAdapter  extends ArrayAdapter<Event> {
         // Populate the data into the template view using the data object
         viewHolder.name.setText(event.getName());
         viewHolder.desc.setText(event.getDescription());
+        viewHolder.idEvent = event.getId();
+
+        //Assignem el color de la vista
+        int idColor = event.isValidated() ? R.color.validated_event : R.color.not_validated_event;
+        convertView.setBackgroundColor(getContext().getResources().getColor(idColor));
         Log.d("ImageUrl", event.getImageURL());
+        //viewHolder.image.setImageResource(R.drawable.placeholder_image);
         //new DownloadImageTask(viewHolder.image).execute(event.getImageURL());
+
         Ion.with(viewHolder.image)
-                //.placeholder(R.drawable.placeholder_image)
+                .placeholder(R.drawable.placeholder_image)
                 //.error(R.drawable.error_image)
                 //.animateLoad(spinAnimation)
-                //.animateIn(fadeInAnimation)
+                // .animateIn(fadeInAnimation)
                 .load(event.getImageURL());
 
         // Return the completed view to render on screen

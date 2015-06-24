@@ -16,14 +16,16 @@ public class Event implements Serializable {
     private String location;
     private Pair<Double,Double> coordinates;
     private String imageURL;
+    private Boolean validated;
 
-    public Event(String id, String name, String date, String description, String location, String imageURL) {
+    public Event(String id, String name, String date, String description, String location, String imageURL, Boolean validated) {
         this.id = id;
         this.name = name;
         this.date = date;
         this.description = description;
         this.location = location;
         this.imageURL = imageURL;
+        this.validated = validated;
     }
 
     public String getName() {
@@ -80,5 +82,13 @@ public class Event implements Serializable {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public Boolean isValidated() {
+        return validated;
+    }
+
+    public void setValidated(Boolean validated) {
+        this.validated = validated;
     }
 }

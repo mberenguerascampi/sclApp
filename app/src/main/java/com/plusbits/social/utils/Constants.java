@@ -10,5 +10,5 @@ public class Constants {
     public final static int ADMIN_VERSION = 3;      //Versió per als administradors de la app
 
     /** IMPORTANT: Versió que s'utilitza **/
-    public final static int VERSION = USER_VERSION;
+    public final static int VERSION = ADMIN_VERSION;
 }

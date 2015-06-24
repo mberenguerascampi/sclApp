@@ -10,6 +10,7 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,6 +23,7 @@ import com.plusbits.social.models.Event;
 import com.plusbits.social.utils.baasbox.BaasboxApi;
 
 import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.ViewById;
 
 import java.util.ArrayList;
 
@@ -36,6 +38,8 @@ import java.util.ArrayList;
  */
 @EFragment
 public class EventsFragment extends DefaultFragment implements AbsListView.OnItemClickListener, ApiListener {
+
+    private ProgressBar events_loading;
 
     /**
      * The fragment's ListView/GridView.
@@ -71,13 +75,14 @@ public class EventsFragment extends DefaultFragment implements AbsListView.OnIte
         ArrayList<Event> arrayOfEvents = new ArrayList<Event>();
         // Create the adapter to convert the array to views
         mAdapter = new EventsAdapter(getActivity(), arrayOfEvents);
-        BaasboxApi.getAllEvents(this);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_event, container, false);
+        events_loading = (ProgressBar)view.findViewById(R.id.events_loading);
+        BaasboxApi.getAllEvents(this, events_loading);
 
         // Set the adapter
         mListView = (AbsListView) view.findViewById(android.R.id.list);

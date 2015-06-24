@@ -1,20 +1,27 @@
 package com.plusbits.social.activities;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Handler;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 
+import com.koushikdutta.ion.Ion;
 import com.plusbits.social.R;
 import com.plusbits.social.utils.Constants;
 
+import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.ViewById;
 
 
 @EActivity(R.layout.activity_splah)
 public class SplashActivity extends ActionBarActivity {
+    @ViewById
+    ImageView ivSplash;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,5 +66,11 @@ public class SplashActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @AfterViews
+    void loadSplashImage(){
+        Uri uri = Uri.parse("android.resource://" + getPackageName() + "/" + R.drawable.placeholder_image);
+        Ion.with(ivSplash).load(uri.toString());
     }
 }

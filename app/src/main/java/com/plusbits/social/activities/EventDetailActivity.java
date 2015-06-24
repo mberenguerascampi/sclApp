@@ -7,6 +7,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.koushikdutta.ion.Ion;
@@ -30,6 +31,9 @@ public class EventDetailActivity extends ActionBarActivity {
 
     @ViewById
     Button btnSetPublicEvent;
+
+    @ViewById
+    ProgressBar validate_event_loading;
 
     private Event event;
 
@@ -67,7 +71,7 @@ public class EventDetailActivity extends ActionBarActivity {
     //EVENTS
     @Click
     void btnSetPublicEvent(){
-        BaasboxApi.setPublicEvent(event.getId());
+        BaasboxApi.setPublicEvent(event.getId(), validate_event_loading);
     }
 
 
@@ -76,7 +80,7 @@ public class EventDetailActivity extends ActionBarActivity {
     @AfterViews
     void fillEventDetails(){
         if(event == null) return;
-        if(Constants.VERSION != Constants.ADMIN_VERSION) btnSetPublicEvent.setVisibility(View.GONE);
+        if(Constants.VERSION != Constants.ADMIN_VERSION || event.isValidated()) btnSetPublicEvent.setVisibility(View.GONE);
         tvNameEvent.setText(event.getName());
         tvDateLocationEvent.setText(event.getDate() + " " + event.getLocation());
         tvDescriptionEvent.setText(event.getDescription());

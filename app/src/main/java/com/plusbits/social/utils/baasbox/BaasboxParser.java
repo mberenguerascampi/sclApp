@@ -12,10 +12,11 @@ public class BaasboxParser {
         String date = doc.getString("date");
         String desc = doc.getString("description");
         String location = doc.getString("location");
+        Boolean validated = doc.getBoolean("validated");
         String imageURL = "http://" + BaasboxConstants.BAASBOX_URL + "/file/" + doc.getString("imageID") +
                             "?X-BAASBOX-APPCODE=" + BaasboxConstants.BAASBOX_APP_CODE;
 
 
-        return new Event(doc.getId(), name, date, desc, location, imageURL);
+        return new Event(doc.getId(), name, date, desc, location, imageURL, validated);
     }
 }

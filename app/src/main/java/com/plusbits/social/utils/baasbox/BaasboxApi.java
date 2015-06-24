@@ -2,6 +2,7 @@ package com.plusbits.social.utils.baasbox;
 
 import android.content.Context;
 import android.util.Log;
+import android.view.View;
 
 import com.baasbox.android.BaasDocument;
 import com.baasbox.android.BaasFile;
@@ -47,7 +48,13 @@ public class BaasboxApi {
         });
     }
 
-    public static void getAllEvents(final ApiListener listener){
+    /**
+     * Mètode que retorna tots els esdeveniments visibles per l'usuari
+     * @param listener Listener que es crida un cop s'ha acabat de cridar l'api de baasbox
+     * @param loadingView Vista que es mostrarà únicament mentre s'estigui realitzan la crida
+     */
+    public static void getAllEvents(final ApiListener listener, final View loadingView){
+        if(loadingView != null) loadingView.setVisibility(View.VISIBLE);
         // using pagination and selection
         BaasQuery.Criteria filter = BaasQuery.builder().pagination(0, 20)
                 .orderBy("field name")
@@ -62,7 +69,6 @@ public class BaasboxApi {
                             ArrayList<Event> events = new ArrayList<Event>();
                             for (BaasDocument doc : res.value()) {
                                 //setPublicDocument(doc);
-                                //TODO: Mirar els permisos
                                 events.add(BaasboxParser.parseEvent(doc));
                             }
                             listener.onGetEventsSuccess(events);
@@ -70,6 +76,7 @@ public class BaasboxApi {
                             Log.e("LOG", "Error", res.error());
                             listener.onRequestFail(res.error().getMessage());
                         }
+                        if(loadingView != null) loadingView.setVisibility(View.GONE);
                     }
                 });
     }
@@ -78,7 +85,9 @@ public class BaasboxApi {
      * Permet que un esdeveniment sigui llegible per a tothom, encara que no estigui registrat
      * @param eventID Id de l'event que es vol fer públic
      */
-    public static void setPublicEvent(String eventID){
+    public static void setPublicEvent(String eventID, final View loadingView){
+        if(loadingView != null) loadingView.setVisibility(View.VISIBLE);
+
         BaasDocument.fetch(BaasboxConstants.EVENTS_COLLECTION,
                 eventID,
                 new BaasHandler<BaasDocument>() {
@@ -90,6 +99,7 @@ public class BaasboxApi {
                         } else {
                             Log.e("LOG","error",res.error());
                         }
+                        if(loadingView != null) loadingView.setVisibility(View.GONE);
                     }});
     }
 
