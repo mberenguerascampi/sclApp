@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="validated_event">#ffede77c</color>
+    <color name="validated_event">#ffffc300</color>
     <color name="not_validated_event">#FF0000</color>
+    <color name="border_event">#ffe2930b</color>
 </resources>

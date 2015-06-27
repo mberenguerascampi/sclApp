@@ -14,6 +14,7 @@ import com.baasbox.android.BaasUser;
 import com.baasbox.android.Grant;
 import com.baasbox.android.RequestOptions;
 import com.baasbox.android.Role;
+import com.baasbox.android.SaveMode;
 import com.plusbits.social.interfaces.ApiListener;
 import com.plusbits.social.models.Event;
 
@@ -61,24 +62,23 @@ public class BaasboxApi {
                 .criteria();
         //TODO: Afegir filter com a parametre del fetchall
 
-        BaasDocument.fetchAll(BaasboxConstants.EVENTS_COLLECTION,
-                new BaasHandler<List<BaasDocument>>() {
-                    @Override
-                    public void handle(BaasResult<List<BaasDocument>> res) {
-                        if (res.isSuccess()) {
-                            ArrayList<Event> events = new ArrayList<Event>();
-                            for (BaasDocument doc : res.value()) {
-                                //setPublicDocument(doc);
-                                events.add(BaasboxParser.parseEvent(doc));
-                            }
-                            listener.onGetEventsSuccess(events);
-                        } else {
-                            Log.e("LOG", "Error", res.error());
-                            listener.onRequestFail(res.error().getMessage());
-                        }
-                        if(loadingView != null) loadingView.setVisibility(View.GONE);
+        BaasDocument.fetchAll(BaasboxConstants.EVENTS_COLLECTION, new BaasHandler<List<BaasDocument>>() {
+            @Override
+            public void handle(BaasResult<List<BaasDocument>> res) {
+                if (res.isSuccess()) {
+                    ArrayList<Event> events = new ArrayList<Event>();
+                    for (BaasDocument doc : res.value()) {
+                        //setPublicDocument(doc);
+                        events.add(BaasboxParser.parseEvent(doc));
                     }
-                });
+                    listener.onGetEventsSuccess(events);
+                } else {
+                    Log.e("LOG", "Error", res.error());
+                    listener.onRequestFail(res.error().getMessage());
+                }
+                if (loadingView != null) loadingView.setVisibility(View.GONE);
+            }
+        });
     }
 
     /**
@@ -93,21 +93,21 @@ public class BaasboxApi {
                 new BaasHandler<BaasDocument>() {
                     @Override
                     public void handle(BaasResult<BaasDocument> res) {
-                        if(res.isSuccess()) {
+                        if (res.isSuccess()) {
                             BaasDocument doc = res.value();
-                            setPublicDocument(doc);
+                            setPublicDocument(doc, loadingView);
                         } else {
-                            Log.e("LOG","error",res.error());
+                            Log.e("LOG", "error", res.error());
                         }
-                        if(loadingView != null) loadingView.setVisibility(View.GONE);
-                    }});
+                    }
+                });
     }
 
     /**
      * Permet que un document sigui llegible per a tothom, encara que no estigui registrat
      * @param doc BaasDocument que es vol fer public
      */
-    public static void setPublicDocument(BaasDocument doc){
+    public static void setPublicDocument(final BaasDocument doc, final View loadingView){
         // assumes doc is an instance of the document
         doc.grantAll(Grant.READ, Role.ANONYMOUS,
                 new BaasHandler<Void>() {
@@ -115,6 +115,7 @@ public class BaasboxApi {
                     public void handle(BaasResult<Void> res) {
                         if (res.isSuccess()) {
                             Log.d("LOG","Permission granted");
+                            updateValidatedDocument(doc, loadingView);
                         } else {
                             Log.e("LOG","Error",res.error());
                         }
@@ -133,6 +134,21 @@ public class BaasboxApi {
                 }
             }
         });*/
+    }
+
+    private static void updateValidatedDocument(BaasDocument doc, final View loadingView){
+        doc.put("validated", true);
+        doc.save(SaveMode.IGNORE_VERSION, new BaasHandler<BaasDocument>() {
+            @Override
+            public void handle(BaasResult<BaasDocument> res) {
+                if (res.isSuccess()) {
+                    Log.d("LOG", "Document saved " + res.value().getId());
+                } else {
+                    Log.e("LOG", "Error", res.error());
+                }
+                if (loadingView != null) loadingView.setVisibility(View.GONE);
+            }
+        });
     }
 
     private void setPublicFile(BaasFile file){

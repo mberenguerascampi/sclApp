@@ -9,36 +9,33 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 import com.plusbits.social.R;
 import com.plusbits.social.models.Event;
-import com.plusbits.social.utils.DownloadImageTask;
+import com.plusbits.social.models.User;
 
 import java.util.ArrayList;
 
 /**
- * Created by Marc on 10/06/2015.
+ * Created by Marc on 27/06/2015.
  */
-public class EventsAdapter  extends ArrayAdapter<Event> {
+public class UsersAdapter extends ArrayAdapter<User> {
     // View lookup cache
     private static class ViewHolder {
-        String idEvent;
+        String idUser;
         TextView name;
         TextView desc;
         ImageView image;
     }
 
-    public EventsAdapter(Context context, ArrayList<Event> events) {
-        super(context, R.layout.item_event, events);
-        Ion ion = Ion.getInstance(getContext(),"ion");
-        ion.getCache().clear();
+    public UsersAdapter(Context context, ArrayList<User> users) {
+        super(context, R.layout.item_event, users);
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         // Get the data item for this position
-        Event event = getItem(position);
+        User user = getItem(position);
         // Check if an existing view is being reused, otherwise inflate the view
         ViewHolder viewHolder; // view lookup cache stored in tag
         if (convertView == null) {
@@ -54,23 +51,19 @@ public class EventsAdapter  extends ArrayAdapter<Event> {
             viewHolder = (ViewHolder) convertView.getTag();
         }
         // Populate the data into the template view using the data object
-        viewHolder.name.setText(event.getName());
-        viewHolder.desc.setText(event.getDescription());
-        viewHolder.idEvent = event.getId();
+//        viewHolder.name.setText(event.getName());
+//        viewHolder.desc.setText(event.getDescription());
+//        viewHolder.idEvent = event.getId();
 
-        //Assignem el color de la vista
-        int idColor = event.isValidated() ? R.color.validated_event : R.color.not_validated_event;
-        convertView.setBackgroundColor(getContext().getResources().getColor(idColor));
-        Log.d("ImageUrl", event.getImageURL());
         //viewHolder.image.setImageResource(R.drawable.placeholder_image);
         //new DownloadImageTask(viewHolder.image).execute(event.getImageURL());
 
-        Ion.with(viewHolder.image)
-                .placeholder(R.drawable.placeholder_image)
-                //.error(R.drawable.error_image)
-                //.animateLoad(spinAnimation)
-                // .animateIn(fadeInAnimation)
-                .load(event.getImageURL());
+//        Ion.with(viewHolder.image)
+//                .placeholder(R.drawable.placeholder_image)
+//                        //.error(R.drawable.error_image)
+//                        //.animateLoad(spinAnimation)
+//                        // .animateIn(fadeInAnimation)
+//                .load(event.getImageURL());
 
         // Return the completed view to render on screen
         return convertView;

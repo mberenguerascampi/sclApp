@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:paddingBottom="2dp">
     <TextView
         android:id="@+id/tvName"
@@ -22,7 +22,7 @@
     <FrameLayout
         android:layout_below="@+id/tvDesc"
         android:layout_marginTop="15dip"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <com.makeramen.roundedimageview.RoundedImageView
@@ -33,7 +33,7 @@
             android:layout_height="wrap_content"
             app:riv_corner_radius="10dip"
             app:riv_border_width="5dip"
-            app:riv_border_color="#D6D6D6"
+            app:riv_border_color="@color/border_event"
             app:riv_mutate_background="false"
             app:riv_tile_mode="repeat"
             app:riv_oval="false" />

@@ -70,7 +70,7 @@ public class SplashActivity extends ActionBarActivity {
 
     @AfterViews
     void loadSplashImage(){
-        Uri uri = Uri.parse("android.resource://" + getPackageName() + "/" + R.drawable.placeholder_image);
+        Uri uri = Uri.parse("android.resource://" + getPackageName() + "/" + R.drawable.loading_img);
         Ion.with(ivSplash).load(uri.toString());
     }
 }

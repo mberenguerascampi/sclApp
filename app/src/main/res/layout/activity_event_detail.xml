@@ -3,16 +3,18 @@
     android:layout_height="match_parent"
     tools:context="com.plusbits.social.activities.EventDetailActivity">
 
-    <ProgressBar android:id="@+id/validate_event_loading" style="?android:attr/progressBarStyleLarge"
-        android:layout_width="wrap_content" android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginBottom="8dp"
-        android:visibility="gone" />
-
     <ImageView
         android:id="@+id/ivEventDetail"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" />
+
+    <ProgressBar android:id="@+id/validate_event_loading" style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="8dp"
+        android:visibility="gone"
+         />
 
     <RelativeLayout
         android:layout_below="@+id/ivEventDetail"
