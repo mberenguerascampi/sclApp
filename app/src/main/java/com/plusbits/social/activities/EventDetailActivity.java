@@ -85,7 +85,7 @@ public class EventDetailActivity extends ActionBarActivity {
         tvDateLocationEvent.setText(event.getDate() + " " + event.getLocation());
         tvDescriptionEvent.setText(event.getDescription());
         Ion.with(ivEventDetail)
-                //.placeholder(R.drawable.placeholder_image)
+                .placeholder(R.drawable.placeholder_image)
                 //.error(R.drawable.error_image)
                 //.animateLoad(spinAnimation)
                 //.animateIn(fadeInAnimation)
