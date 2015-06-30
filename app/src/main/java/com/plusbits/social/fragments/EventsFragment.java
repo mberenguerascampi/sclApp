@@ -3,6 +3,8 @@ package com.plusbits.social.fragments;
 import android.app.Activity;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,6 +42,8 @@ import java.util.ArrayList;
 public class EventsFragment extends DefaultFragment implements AbsListView.OnItemClickListener, ApiListener {
 
     private ProgressBar events_loading;
+
+    private SwipeRefreshLayout pullToRefresh;
 
     /**
      * The fragment's ListView/GridView.
@@ -82,7 +86,18 @@ public class EventsFragment extends DefaultFragment implements AbsListView.OnIte
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_event, container, false);
         events_loading = (ProgressBar)view.findViewById(R.id.events_loading);
-        BaasboxApi.getAllEvents(this, events_loading);
+        final ApiListener listener = this;
+        BaasboxApi.getAllEvents(listener, events_loading);
+
+        //Refresh when pull
+        pullToRefresh = (SwipeRefreshLayout) view.findViewById(R.id.pullToRefresh);
+        pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+
+            @Override
+            public void onRefresh() {
+                BaasboxApi.getAllEvents(listener, events_loading);
+            }
+        });
 
         // Set the adapter
         mListView = (AbsListView) view.findViewById(android.R.id.list);
@@ -123,6 +138,7 @@ public class EventsFragment extends DefaultFragment implements AbsListView.OnIte
     /** API LISTENER **/
     @Override
     public void onGetEventsSuccess(ArrayList<Event> events) {
+        pullToRefresh.setRefreshing(false);
         mAdapter.clear();
         mAdapter.addAll(events);
         mAdapter.notifyDataSetChanged();
@@ -130,6 +146,7 @@ public class EventsFragment extends DefaultFragment implements AbsListView.OnIte
 
     @Override
     public void onRequestFail(String error) {
+        pullToRefresh.setRefreshing(false);
         Toast.makeText(getActivity(), error, Toast.LENGTH_SHORT).show();
     }
 }

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 import android.view.View;
 
+import com.baasbox.android.BaasBox;
 import com.baasbox.android.BaasDocument;
 import com.baasbox.android.BaasFile;
 import com.baasbox.android.BaasHandler;
@@ -15,6 +16,8 @@ import com.baasbox.android.Grant;
 import com.baasbox.android.RequestOptions;
 import com.baasbox.android.Role;
 import com.baasbox.android.SaveMode;
+import com.baasbox.android.json.JsonObject;
+import com.baasbox.android.net.HttpRequest;
 import com.plusbits.social.interfaces.ApiListener;
 import com.plusbits.social.models.Event;
 
@@ -36,14 +39,14 @@ public class BaasboxApi {
     }
 
     public void getUserProfile(String username){
-        BaasUser.fetch(username,new BaasHandler<BaasUser>() {
+        BaasUser.fetch(username, new BaasHandler<BaasUser>() {
             @Override
             public void handle(BaasResult<BaasUser> res) {
-                if(res.isSuccess()){
+                if (res.isSuccess()) {
                     BaasUser user = res.value();
-                    Log.d("LOG","The user: "+user);
+                    Log.d("LOG", "The user: " + user);
                 } else {
-                    Log.e("LOG","Error",res.error());
+                    Log.e("LOG", "Error", res.error());
                 }
             }
         });
@@ -88,25 +91,28 @@ public class BaasboxApi {
     public static void setPublicEvent(String eventID, final View loadingView){
         if(loadingView != null) loadingView.setVisibility(View.VISIBLE);
 
-        BaasDocument.fetch(BaasboxConstants.EVENTS_COLLECTION,
-                eventID,
-                new BaasHandler<BaasDocument>() {
+        BaasBox box = BaasBox.getDefault();
+        box.rest(HttpRequest.POST,
+                "plugin/event.validate",
+                new JsonObject().put("eventId", eventID),
+                true,
+                new BaasHandler<JsonObject>() {
                     @Override
-                    public void handle(BaasResult<BaasDocument> res) {
+                    public void handle(BaasResult<JsonObject> res) {
+                        Log.d("TAG","Ok: " + res.isSuccess());
                         if (res.isSuccess()) {
-                            BaasDocument doc = res.value();
-                            setPublicDocument(doc, loadingView);
+                            Log.d("LOG", "validate success");
                         } else {
                             Log.e("LOG", "error", res.error());
                         }
+                        if (loadingView != null) loadingView.setVisibility(View.GONE);
                     }
                 });
     }
 
-    /**
-     * Permet que un document sigui llegible per a tothom, encara que no estigui registrat
-     * @param doc BaasDocument que es vol fer public
-     */
+/*
+    ARA ES FA EN LA PART DEL SERVIDOR, NOMÉS CAL CRIDAR EL PLUGIN
+
     public static void setPublicDocument(final BaasDocument doc, final View loadingView){
         // assumes doc is an instance of the document
         doc.grantAll(Grant.READ, Role.ANONYMOUS,
@@ -114,26 +120,13 @@ public class BaasboxApi {
                     @Override
                     public void handle(BaasResult<Void> res) {
                         if (res.isSuccess()) {
-                            Log.d("LOG","Permission granted");
+                            Log.d("LOG", "Permission granted");
                             updateValidatedDocument(doc, loadingView);
                         } else {
-                            Log.e("LOG","Error",res.error());
+                            Log.e("LOG", "Error", res.error());
                         }
                     }
                 });
-
-        // ara fem servir assets que són públics
-        /*BaasFile.fetch(doc.getString("imageID"), new BaasHandler<BaasFile>() {
-            @Override
-            public void handle(BaasResult<BaasFile> res) {
-                if (res.isSuccess()) {
-                    Log.d("LOG","Your file details"+res);
-                    BaasFile file = res.value();
-                } else {
-                    Log.e("LOG","Deal with eror",res.error());
-                }
-            }
-        });*/
     }
 
     private static void updateValidatedDocument(BaasDocument doc, final View loadingView){
@@ -150,27 +143,16 @@ public class BaasboxApi {
             }
         });
     }
+*/
 
     private void setPublicFile(BaasFile file){
-        file.grant(Grant.READ, Role.ANONYMOUS,new BaasHandler<Void>(){
+        file.grant(Grant.READ, Role.ANONYMOUS, new BaasHandler<Void>() {
             @Override
-            public void handle(BaasResult<Void> res){
+            public void handle(BaasResult<Void> res) {
                 if (res.isSuccess()) {
-                    Log.d("LOG","Everybody can read the file");
+                    Log.d("LOG", "Everybody can read the file");
                 } else {
-                    Log.e("LOG","deal with error",res.error());
-                }
-            }
-        });
-    }
-
-    private void createLinkFromDocumentToImage(String strDoc, String strImage){
-        BaasLink.create(strDoc, "image-id", strImage, RequestOptions.DEFAULT, new BaasHandler<BaasLink>() {
-            @Override
-            public void handle(BaasResult<BaasLink> res) {
-                if (res.isSuccess()) {
-                    BaasLink value = res.value();
-                    Log.d("TAG", "value is your new link");
+                    Log.e("LOG", "deal with error", res.error());
                 }
             }
         });
