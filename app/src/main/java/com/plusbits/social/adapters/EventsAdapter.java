@@ -14,6 +14,7 @@ import com.koushikdutta.ion.Ion;
 import com.plusbits.social.R;
 import com.plusbits.social.models.Event;
 import com.plusbits.social.utils.DownloadImageTask;
+import com.plusbits.social.utils.FontsUtils;
 
 import java.util.ArrayList;
 
@@ -48,6 +49,7 @@ public class EventsAdapter  extends ArrayAdapter<Event> {
             viewHolder.name = (TextView) convertView.findViewById(R.id.tvName);
             viewHolder.desc = (TextView) convertView.findViewById(R.id.tvDesc);
             viewHolder.image = (ImageView)convertView.findViewById(R.id.ivEvent);
+            FontsUtils.setFont("roboto/Roboto-Regular", viewHolder.name, getContext());
             //viewHolder.image.getLayoutParams().width = convertView.getWidth();
             convertView.setTag(viewHolder);
         } else {

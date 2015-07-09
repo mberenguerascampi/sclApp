@@ -1,7 +1,9 @@
 package com.plusbits.social.activities;
 
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -10,10 +12,14 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.github.ksoichiro.android.observablescrollview.ObservableScrollView;
+import com.github.ksoichiro.android.observablescrollview.ObservableScrollViewCallbacks;
+import com.github.ksoichiro.android.observablescrollview.ScrollState;
 import com.koushikdutta.ion.Ion;
 import com.plusbits.social.R;
 import com.plusbits.social.models.Event;
 import com.plusbits.social.utils.Constants;
+import com.plusbits.social.utils.FontsUtils;
 import com.plusbits.social.utils.baasbox.BaasboxApi;
 
 import org.androidannotations.annotations.AfterViews;
@@ -22,15 +28,18 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 
 @EActivity(R.layout.activity_event_detail)
-public class EventDetailActivity extends ActionBarActivity {
+public class EventDetailActivity extends AppCompatActivity implements ObservableScrollViewCallbacks {
     @ViewById
     ImageView ivEventDetail;
 
     @ViewById
-    TextView tvNameEvent, tvDateLocationEvent, tvDescriptionEvent;
+    TextView tvNameEvent, tvDateEvent, tvLocationEvent, tvDescriptionEvent;
 
     @ViewById
     Button btnSetPublicEvent;
+
+    @ViewById
+    ObservableScrollView eventObservableScrollView;
 
     @ViewById
     ProgressBar validate_event_loading;
@@ -40,6 +49,7 @@ public class EventDetailActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Bundle bundle = getIntent().getExtras();
         event = (Event)bundle.getSerializable("EVENT");
@@ -80,9 +90,12 @@ public class EventDetailActivity extends ActionBarActivity {
     @AfterViews
     void fillEventDetails(){
         if(event == null) return;
+        eventObservableScrollView.setScrollViewCallbacks(this);
         if(Constants.VERSION != Constants.ADMIN_VERSION || event.isValidated()) btnSetPublicEvent.setVisibility(View.GONE);
         tvNameEvent.setText(event.getName());
-        tvDateLocationEvent.setText(event.getDate() + " " + event.getLocation());
+        FontsUtils.setFont("roboto/Roboto-Medium", tvNameEvent, getApplicationContext());
+        tvDateEvent.setText(event.getDate());
+        tvLocationEvent.setText(event.getLocation());
         tvDescriptionEvent.setText(event.getDescription());
         Ion.with(ivEventDetail)
                 .placeholder(R.drawable.placeholder_image)
@@ -90,5 +103,33 @@ public class EventDetailActivity extends ActionBarActivity {
                 //.animateLoad(spinAnimation)
                 //.animateIn(fadeInAnimation)
                 .load(event.getImageURL());
+    }
+
+    //ObservableScrollViewCallback Implements
+    @Override
+    public void onScrollChanged(int scrollY, boolean firstScroll,
+                                boolean dragging) {
+    }
+
+    @Override
+    public void onDownMotionEvent() {
+        /*ActionBar ab = getSupportActionBar();
+        if (ab.isShowing()) {
+            ab.hide();
+        }*/
+    }
+
+    @Override
+    public void onUpOrCancelMotionEvent(ScrollState scrollState) {
+        ActionBar ab = getSupportActionBar();
+        if (scrollState == ScrollState.UP) {
+            if (ab.isShowing()) {
+                ab.hide();
+            }
+        } else if (scrollState == ScrollState.DOWN) {
+            if (!ab.isShowing()) {
+                ab.show();
+            }
+        }
     }
 }
